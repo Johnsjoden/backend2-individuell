@@ -1,9 +1,24 @@
-const express = require("express")
 
+const express = require('express')
 const router = express.Router()
+const User = require("../modules/user")
+const JWT = require("jsonwebtoken")
 
-router.get("/token", (req,res ) => {
-    console.log("Hello")
+const JWT_SECRET = process.env.JWT_SECRET
+
+router.post('/token', async (req, res) => {
+    const {username, password} = req.body
+    const user = await User.login(username, password, res)
+    if(user){
+      const userId = user._id.toString()
+      console.log(userId)
+      const token = JWT.sign(
+        {userId, username: user.username},
+        JWT.SECRET, 
+        {expiresIn: "30 days", subject: userId}
+      )
+      res.send({token, userId})
+    }
 })
 
-exports.router = router
+module.exports = router
