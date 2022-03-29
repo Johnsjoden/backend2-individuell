@@ -10,12 +10,11 @@ router.use( async (req, res, next) => {
         const token = auth.split(" ")[1]
         JWT.verify(token, JWT_SECRET, function(err){
             if(err) {
-                res.status(401).json("JWT expired") 
+                res.sendStatus(401)
             }else {
                 req.user = JWT.verify(token, JWT_SECRET)
                 next()
             }
-
         })
     }else {
         next()
