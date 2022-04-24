@@ -8,13 +8,13 @@ const userSchema = mongoose.Schema({
 userSchema.pre(
     "save",
     async function(next){
-        const user = this
-        let password = user.password
-        const hash = bcrypt.hash(password, 10)
-        password = hash
+        
+        let user = this
+        const hash = await bcrypt.hash(user.password, 10)
+        user.password = hash
         next()
     }
-)
+) 
 
 userSchema.statics.login = async function(username, password, res, next){
         const user = await User.findOne({username})

@@ -11,10 +11,9 @@ router.post('/token', async (req, res) => {
     const user = await User.login(username, password, res)
     if(user){
       const userId = user._id.toString()
-      console.log(userId)
       const token = JWT.sign(
         {userId, username: user.username},
-        JWT.SECRET, 
+        JWT_SECRET, 
         {expiresIn: "30 days", subject: userId}
       )
       res.send({token, userId})
