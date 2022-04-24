@@ -1,8 +1,8 @@
 const mongoose = require("mongoose")
-
+const User = require("./user")
 const todoSchema = mongoose.Schema({
     content: {type: String, required: true},
-    userId: {type: mongoose.Schema.Types.ObjectId},
+    userId: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     date: {type: Date, default: Date.now},
     done: {type: Boolean, default: false},
     files:[String]
@@ -14,9 +14,9 @@ const getTodo = async (id, query) => {
     let {date, content, search} = query
     search = search.replace(/ /g, "|")
     if(content){
-        return await Todo.find({userId: id, done: false, content: {$regex: new RegExp(`\\b${search}\\b`, "gi")}}).sort({content: content})
+        return await Todo.find({userId: id, done: false, content: {$regex: new RegExp(`\\b${search}\\b`, "gi")}}).populate("userId", "username, -_id").sort({content: content})
     }
-    return await Todo.find({userId: id, done: false, content: {$regex: new RegExp(`\\b${search}\\b`, "gi")}}).sort({date: date})
+    return await Todo.find({userId: id, done: false, content: {$regex: new RegExp(`\\b${search}\\b`, "gi")}}).populate("userId", "username, -_id").sort({date: date})
     
     
     
@@ -45,9 +45,9 @@ const getFinishTodo = async (id, query) => {
     let {date, content, search} = query
     search = search.replace(/ /g, "|")
     if(content){
-        return await Todo.find({userId: id, done: true, content: {$regex: new RegExp(`\\b${search}\\b`, "gi")}}).sort({content: content})
+        return await Todo.find({userId: id, done: true, content: {$regex: new RegExp(`\\b${search}\\b`, "gi")}}).populate("userId", "username, -_id").sort({content: content})
     }
-    return await Todo.find({userId: id, done: true, content: {$regex: new RegExp(`\\b${search}\\b`, "gi")}}).sort({date: date})
+    return await Todo.find({userId: id, done: true, content: {$regex: new RegExp(`\\b${search}\\b`, "gi")}}).populate("userId", "username, -_id").sort({date: date})
 }
 
 module.exports = {Todo, getTodo, getFinishTodo, getSpecificTodo, updateTodo}

@@ -45,7 +45,7 @@ export default function Home() {
     }, [select, search, token])
   return ( 
     <div>
-        {console.log(token)}
+        {console.log(result)}
         {/* sort on date
         <select onChange={e => setSelect(e.target.value)}>
           <option value={"-1"}>Date2</option>
