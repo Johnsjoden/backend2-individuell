@@ -11,13 +11,12 @@ export default function TodoFinish() {
     const [search, setSearch] = useState("")
     const {
         token,
-        API_URL
+        API_URL,
+        config
     } = useContext(myContext)
     const fetchData = () => {
-        fetch(`${API_URL}/api/finish/todo/?search=${search}${select}`,{
-            headers:{
-                "Authorization": "Bearer " + token
-            }})
+        fetch(`${API_URL}/api/finish/todo/?search=${search}${select}`,
+        config)
         .then(res => res.json())
         .then(result => setResult(result))
     }

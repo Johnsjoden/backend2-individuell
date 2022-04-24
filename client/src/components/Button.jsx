@@ -4,21 +4,17 @@ import { useState } from 'react'
 import { myContext } from '../App'
 export default function Button(props) {
     const [isDone, setIsDone] = useState(props.done)
+    const yo = "hello"
     const {
         client
     } = useContext(myContext)
-    const handleOnClick = (e) => {
+    const handleOnClick = (e, yo) => {
         e.preventDefault()
         const object = {
             id: props.id,
+            done: props.done
         }
-        if(isDone === false){
-            object.done = false
-            client.current.emit("click", object)
-        }else {
-            object.done = true
-            client.current.emit("click", object)
-        }
+        client.current.emit("click", object)
         props.fetchData()
     }
   return (

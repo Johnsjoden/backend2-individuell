@@ -14,12 +14,14 @@ function App() {
   const [fetchUrl, setFetchUrl] = useState(`${API_URL}/api/todo/`)
   const [result, setResult] = useState([])
   const client = useRef()
+  const config = {
+    headers: {
+      "Authorization": "Bearer " + token
+    }
+  }
+  // sätt config headers i context, så slipper man använda det om å om igen. 
   const fetchData = () => {
-    fetch(`${fetchUrl}`,{
-        headers:{
-            "Authorization": "Bearer " + token
-        }
-    })
+    fetch(`${fetchUrl}`,config)
     .then(res => res.json())
     .then(result => setResult(result))
   }
@@ -38,7 +40,7 @@ function App() {
       <Link to="/register">Register</Link> <br/>
       <Link to="/login">Login</Link> <br/>
       {token? <button onClick={handleOnClick}>Log out</button> :  ""}
-      <myContext.Provider value={{API_URL, token, userId, client, setResult, result,  fetchData, fetchUrl, setFetchUrl}}>
+      <myContext.Provider value={{API_URL, token, userId, client, setResult, result,  fetchData, fetchUrl, setFetchUrl, config}}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

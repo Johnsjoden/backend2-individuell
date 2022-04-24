@@ -34,12 +34,9 @@ io.on("connection", socket => {
         console.log("user disconnect")
     }) 
     socket.on("click", async (subject) => {
-        const {id, done} = subject
-        if(done === false){
-            const result = await Todo.findByIdAndUpdate({_id: id}, {done: true})
-        }else {
-            const result = await Todo.findByIdAndUpdate({_id: id}, {done: false})
-        }
+        let {id, done} = subject
+        done === false ? done = true : done = false
+        const result = await Todo.findByIdAndUpdate({_id: id}, {done: done})
     })
 })
 mongoose.connect("mongodb://localhost:27017/inviduell")
